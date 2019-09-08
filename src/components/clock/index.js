@@ -37,6 +37,7 @@ class Clock extends React.PureComponent {
         <View style={styles.outerClock} />
         <View
           style={{
+            ...styles.clock,
             ...styles.hourClock,
             transform: [{rotate: `${hourAngle}deg`}],
           }}>
@@ -44,6 +45,7 @@ class Clock extends React.PureComponent {
         </View>
         <View
           style={{
+            ...styles.clock,
             ...styles.minuteClock,
             transform: [{rotate: `${minAngle}deg`}],
           }}>
@@ -51,6 +53,7 @@ class Clock extends React.PureComponent {
         </View>
         <View
           style={{
+            ...styles.clock,
             ...styles.secClock,
             transform: [{rotate: `${secAngle}deg`}],
           }}>

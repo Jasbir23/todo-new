@@ -1,93 +1,84 @@
 import {combineReducers} from 'redux';
+import Immutable from 'immutable';
 
 import actionContants from '../actions/actionConstants';
 import {getRandomColor} from '../../utils';
 
 const color1 = getRandomColor();
-const color2 = getRandomColor();
-const initialTodos = [
-  {
-    title: 'Monday',
-    todos: [
-      {
-        title: 'Do laundry',
-        subTitle: 'Do laundry on time nkn nkn',
-        isChecked: true,
-      },
-      {
-        title: 'Do laundry',
-        subTitle: 'Do laundry on time nkn nkn',
-        isChecked: false,
-      },
-    ],
-    color: color1.color,
-    isRev: color1.isRev,
-  },
-  {
-    title: 'Tuesday',
-    todos: [
-      {
-        title: 'Do laundry',
-        subTitle: 'Do laundry on time nkn nkn',
-        isChecked: true,
-      },
-      {
-        title: 'Do laundry',
-        subTitle: 'Do laundry on time nkn nkn',
-        isChecked: false,
-      },
-    ],
-    color: color2.color,
-    isRev: color2.isRev,
-  },
-];
+
+let initialTodos = new Immutable.List();
+let todos1 = new Immutable.List();
+todos1 = todos1.push(
+  new Immutable.Map({
+    title: 'Do laundry',
+    subTitle: 'Do laundry on time',
+    isChecked: false,
+    id: 'todoItem0',
+  }),
+);
+
+const todoList = new Immutable.Map({
+  title: 'Tuesday',
+  color: color1.color,
+  isRev: color1.isRev,
+  id: 'todoList0',
+});
+initialTodos = initialTodos.push(todoList);
+
+function allTodoItems(
+  state = new Immutable.Map({
+    todoList0: todos1,
+  }),
+  action,
+) {
+  switch (action.type) {
+    case actionContants.ADD_TODO_ITEM: {
+      const {itemContext, title, description} = action.payload;
+      return state.update(`todoList${itemContext}`, todos => {
+        const itemObj = {
+          title: title,
+          subTitle: description,
+          isChecked: false,
+          id: 'todoItem' + ((todos && todos.size) || 0),
+        };
+        if (todos) {
+          const newTodoItem = new Immutable.Map(itemObj);
+          return todos.push(newTodoItem);
+        } else return new Immutable.List([itemObj]);
+      });
+    }
+    case actionContants.HANDLE_CHECKBOX: {
+      const {todoIndex, todoListindex} = action.payload;
+      return state.updateIn(
+        [`todoList${todoListindex}`, todoIndex, 'isChecked'],
+        checkBox => !checkBox,
+      );
+    }
+    default:
+      return state;
+  }
+}
 
 function allTodos(
-  state = {
+  state = new Immutable.Map({
     allTodos: initialTodos,
     selected: null,
-  },
+  }),
   action,
 ) {
   switch (action.type) {
     case actionContants.ADD_TODO_LIST: {
       const color = getRandomColor();
-      const newTodo = {
+      const newList = new Immutable.Map({
         title: action.payload,
-        todos: [],
         color: color.color,
         isRev: color.isRev,
-      };
-      return Object.assign({}, state, {
-        allTodos: [...state.allTodos, newTodo],
+        id: 'todoList' + state.get('allTodos').size,
       });
-    }
-    case actionContants.ADD_TODO_ITEM: {
-      const newTodoItem = {
-        title: action.payload.title,
-        subTitle: action.payload.description,
-        isChecked: false,
-      };
-      let todoArray = state.allTodos.slice();
-      todoArray[action.payload.itemContext].todos.push(newTodoItem);
-      return Object.assign({}, state, {
-        allTodos: todoArray,
-      });
-    }
-    case actionContants.HANDLE_CHECKBOX: {
-      let todoArray = state.allTodos.slice();
-      const {todoIndex, todoListindex} = action.payload;
-      todoArray[todoListindex].todos[todoIndex].isChecked = !todoArray[
-        todoListindex
-      ].todos[todoIndex].isChecked;
-      return Object.assign({}, state, {
-        allTodos: todoArray,
-      });
+      return state.update('allTodos', allTodos => allTodos.push(newList));
     }
     case actionContants.SET_SELECTED_LIST: {
-      return Object.assign({}, state, {
-        selected: action.payload,
-      });
+      return state.set('selected', action.payload);
     }
     default:
       return state;
@@ -96,15 +87,16 @@ function allTodos(
 
 // type can be list or item
 function modalState(
-  state = {
+  state = new Immutable.Map({
     isVisible: false,
     type: 'list',
-  },
+    itemContext: 0,
+  }),
   action,
 ) {
   switch (action.type) {
     case actionContants.SET_MODAL_PROPERTIES:
-      return Object.assign({}, state, action.payload);
+      return new Immutable.Map(action.payload);
     default:
       return state;
   }
@@ -113,5 +105,6 @@ function modalState(
 const rootReducer = combineReducers({
   allTodos,
   modalState,
+  allTodoItems,
 });
 export default rootReducer;

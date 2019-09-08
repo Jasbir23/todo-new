@@ -13,12 +13,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardContainer: {
-    flex: 5.75,
+    flex: 11.5,
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   cardContainer2: {
-    flex: 5.75,
+    flex: 11.5,
+    alignSelf: 'flex-start',
+    marginLeft: -50,
+    marginTop: 400,
+    position: 'absolute',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
@@ -32,11 +36,12 @@ const styles = StyleSheet.create({
   },
   todoHeader: {
     flex: 1,
-    marginLeft: 20,
+    paddingLeft: 20,
   },
   todoList: {
     flex: 12,
     justifyContent: 'flex-start',
   },
+  bigList: {marginBottom: 200},
 });
 export default styles;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, ScrollView, FlatList} from 'react-native';
 
 import CardTitle from '../CardTitle';
 import CartTodo from '../CartTodoItem';
@@ -34,17 +34,28 @@ const CardComponent = ({
         />
       </View>
       <View style={styles.listContainer}>
-        {todos.map((todo, todoIndex) => (
-          <CartTodo
-            isRev={isRev}
-            handleCheckbox={() => handleCheckbox(todoIndex)}
-            key={todoIndex}
-            todoTitle={todo.title}
-            isChecked={todo.isChecked}
-          />
-        ))}
+        <FlatList
+          data={todos}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item, index}) =>
+            renderTodoItem(item, index, handleCheckbox, isRev)
+          }
+          bounces={false}
+        />
       </View>
     </View>
+  );
+};
+
+const renderTodoItem = (todo, todoIndex, handleCheckbox, isRev) => {
+  return (
+    <CartTodo
+      isRev={isRev}
+      handleCheckbox={() => handleCheckbox(todoIndex)}
+      key={todoIndex}
+      todoTitle={todo.title}
+      isChecked={todo.isChecked}
+    />
   );
 };
 

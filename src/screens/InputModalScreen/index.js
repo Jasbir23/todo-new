@@ -45,6 +45,7 @@ const InputModal = ({style, isVisible, type, dispatch, itemContext}) => {
       behavior="padding"
       enabled>
       <InputView
+        isVisible={isVisible}
         handleAddClick={inputValues => {
           if (type === 'list') {
             inputValues[listInputs[0].placeHolder] &&
@@ -82,10 +83,11 @@ const InputModal = ({style, isVisible, type, dispatch, itemContext}) => {
 };
 
 const mapStateToProps = state => {
+  const {isVisible, type, itemContext} = state.modalState.toJS();
   return {
-    isVisible: state.modalState.isVisible,
-    type: state.modalState.type,
-    itemContext: state.modalState.itemContext,
+    isVisible,
+    type,
+    itemContext,
   };
 };
 

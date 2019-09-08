@@ -10,11 +10,16 @@ class InputView extends React.PureComponent {
     this.state = {
       inputValues: {},
       inputs: props.inputs,
+      isVisible: props.isVisible,
     };
   }
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.inputs !== prevState.inputs) {
-      return {inputValues: {}, inputs: nextProps.inputs};
+    if (nextProps.isVisible !== prevState.isVisible) {
+      return {
+        inputValues: {},
+        isVisible: nextProps.isVisible,
+        inputs: nextProps.inputs,
+      };
     }
     return null;
   }
