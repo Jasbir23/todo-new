@@ -27,7 +27,7 @@ let colorPointer = -1;
 //   return color;
 // }
 export function getRandomColor() {
-  colorPointer > randomColorSet.length - 1
+  colorPointer >= randomColorSet.length - 1
     ? (colorPointer = 0)
     : colorPointer++;
   return randomColorSet[colorPointer];

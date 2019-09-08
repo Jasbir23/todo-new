@@ -26,7 +26,8 @@ const TodoMainList = ({
     }
     horizontal={true}
     style={styles.listContainer}
-    bounces={false}></FlatList>
+    bounces={false}
+  />
 );
 
 const returnTodoList = (

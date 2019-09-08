@@ -31,5 +31,7 @@ const helperSizes = {
   clockShadowWidth: 2,
   clockShadowHeight: 2,
   bigCardRadius: 30,
+  sliderCardLimits: 150,
+  cardExtension: 100,
 };
 export default helperSizes;
